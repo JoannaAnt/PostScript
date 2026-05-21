@@ -1,0 +1,38 @@
+%!
+/red 0.33 def
+/green 0 def
+/blue 0 def
+/width 5 def
+/changeRed { /red red 0.01 sub def } def 
+/changeGreen { /green green 0.03 add def } def 
+/changeBlue { /blue blue 0 add def } def
+/changeWidth { /width width 0.3 sub def} def  
+
+/tree {
+4 dict begin
+/a exch def
+/l exch def
+/y exch def
+/x exch def
+l 10 ge {
+newpath
+x y moveto
+changeRed
+changeGreen
+changeBlue
+red green blue setrgbcolor
+changeWidth
+width setlinewidth
+a cos l mul a sin l mul rlineto
+currentpoint
+stroke
+l 0.85 mul 3 copy
+a 15 add tree
+a 15 sub tree
+} if
+end
+} def
+300 100 70 90 tree
+
+showpage
+%%EOF
