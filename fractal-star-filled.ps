@@ -1,0 +1,49 @@
+%!
+
+/TF {
+    x y lineto % Move pointer to the current point (x, y)
+    dist alpha cos mul dup x add /x exch def % x = x + dist * cos(alpha), x-axis difference
+    dist alpha sin mul dup y add /y exch def % y = y + dist * sin(alpha), y-axis difference
+    rlineto % Draw a line from the current point to new point (x, y)
+} def
+
+/TPlus {
+    /alpha alpha dalpha add def
+} def % Rotate clockwise by dalpha
+
+/TMinus {
+    /alpha alpha dalpha sub def
+} def % Rotate counter-clockwise by dalpha
+
+
+/F {
+    /iter iter 1 add def
+    iter itn eq { TF }
+    {
+        F Plus F Minus Minus F Plus F
+    } ifelse
+    /iter iter 1 sub def
+} def
+
+/Plus { TPlus } def
+/Minus { TMinus } def
+
+/dist 5 def
+/dalpha 60 def
+/iter 0 def
+/itn 5 def
+/x 100 def
+/y 500 def
+/alpha 0 def
+
+newpath
+x y moveto
+F Minus Minus F Minus Minus F Minus Minus
+closepath
+
+gsave
+0.3 0.5 0.7 setrgbcolor
+fill
+grestore
+
+showpage
