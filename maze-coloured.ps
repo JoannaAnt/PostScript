@@ -1,0 +1,61 @@
+%!
+
+/red 0.33 def
+/green 0 def
+/blue 1 def
+/changeRed { /red red 0.002 add def } def 
+/changeGreen { /green green 0.001 add def } def 
+/changeBlue { /blue blue 0.001 sub def } def
+
+/TF {
+    newpath
+    x y moveto % Move pointer to the current point (x, y)
+    changeRed
+    changeGreen
+    changeBlue
+    red green blue setrgbcolor
+    dist alpha cos mul dup x add /x exch def % x = x + dist * cos(alpha), x-axis difference
+    dist alpha sin mul dup y add /y exch def % y = y + dist * sin(alpha), y-axis difference
+    rlineto stroke % Draw a line from the current point to new point (x, y)
+} def
+
+/TPlus {
+    /alpha alpha dalpha add def
+} def % Rotate clockwise by dalpha
+
+/TMinus {
+    /alpha alpha dalpha sub def
+} def % Rotate counter-clockwise by dalpha
+
+
+/L {
+    /iter iter 1 add def
+    iter itn ne {
+        Plus R F Minus L F L Minus F R Plus
+    } if
+    /iter iter 1 sub def
+} def
+
+/R {
+    /iter iter 1 add def
+    iter itn ne {
+        Minus L F Plus R F R Plus F L Minus
+    } if
+    /iter iter 1 sub def
+} def
+
+/F { TF } def
+/Plus { TPlus } def
+/Minus { TMinus } def
+
+/dist 10 def
+/dalpha 90 def
+/iter 0 def
+/itn 6 def
+/x 140 def
+/y 200 def
+/alpha 90 def
+
+R
+
+showpage
