@@ -1,0 +1,64 @@
+%!
+
+/TF {
+x y lineto
+dist alpha cos mul dup x add /x exch def
+dist alpha sin mul dup y add /y exch def
+rlineto
+} def
+
+/TPlus {
+/alpha alpha dalpha add def
+} def
+
+/TMinus {
+/alpha alpha dalpha sub def
+} def
+
+/F {
+/iter iter 1 add def
+iter itn eq { TF }
+{
+F Plus F Minus Minus F Plus F
+} ifelse
+/iter iter 1 sub def
+} def
+
+/Plus { TPlus } def
+/Minus { TMinus } def
+
+/dist 5 def
+/dalpha 60 def
+/iter 0 def
+/itn 5 def
+/x 100 def
+/y 500 def
+/alpha 0 def
+/inch {72 mul} def
+
+newpath
+x y moveto
+F Minus Minus F Minus Minus F Minus Minus
+closepath
+
+gsave % save graphics state
+clip % clip to constructed path
+newpath % clear out current path
+% define the shading and function dictionaries
+<< /ShadingType 2
+/ColorSpace /DeviceRGB
+/Coords [0 0 3 inch 11 inch]
+%define the Function
+/Function <<
+/FunctionType 2
+/Domain [0 1]
+/C0 [1 1 0] % Yellow
+/C1 [0 0 1] % Blue
+/N 1
+>>
+>>
+shfill
+grestore
+
+showpage
+%%EOF
